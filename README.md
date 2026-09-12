@@ -1,65 +1,53 @@
-# Tilt Tui
+# Tilt TUI
 
-![screenshot](./docs/tui-screenshot.png)
+<img width="3292" height="1996" alt="image" src="https://github.com/user-attachments/assets/5cc3f81e-0a7a-4dbc-8ef6-a83f3c2a5d65" />
 
 ## Requirements
 
-- bun
-- a running tilt process
+- [Bun](https://bun.sh/)
+- [Tilt](https://tilt.dev/)
+- A running Tilt instance, or a project with a `Tiltfile`
 
 ## Running
 
-### Dev Mode
+Install dependencies and start the development TUI:
 
-```
+```bash
 bun install
 bun dev
 ```
 
-### Compile a Binary
+To have the TUI start Tilt itself:
 
-compile a binary for the current platform
-
+```bash
+bun dev up
 ```
+
+Compile a binary for the current platform:
+
+```bash
 bun run build:binary:single
-
-# then symlink built binary
-$ which tilt-tui
-/path/to/tilt-tui/dist/tilt-tui-linux-x64/bin/tilt-tui
-```
-
-### Debugging
-
-run debug command then click lick to open javascript debug console, or attach another debugger to port.
-
-```
-❯ bun run debug
-$ SHOW_CONSOLE=true bun run --inspect-wait --conditions=browser --preload @opentui/solid/preload ./src/index.tsx
---------------------- Bun Inspector ---------------------
-Listening:
-  ws://localhost:6499/de2t02omqqh
-Inspect in browser:
-  https://debug.bun.sh/#localhost:6499/de2t02omqqh
---------------------- Bun Inspector ---------------------
 ```
 
 ## Using
 
-`?` will show you list of context-aware keyboard shortcuts.
+Press `?` for the complete context-aware shortcut list.
+
+The complete, context-aware keybinding list is available in the TUI with `?`.
+Keybindings can also be customized through the configuration file below.
+
+Log timestamps from the application are preserved. TUI-added timestamps are off
+by default because most structured application logs already include them.
 
 ## Configuration
 
-Tilt TUI loads user settings from `~/.config/tilt-tui/config.json`.
+Tilt TUI loads optional settings from:
 
-`tilt-tui up` starts `tilt` with a filtered environment: common shell vars,
-`KUBECONFIG`, and `TILT_*` variables are passed through. Broad tokens from your
-shell are not forwarded by default.
+```text
+~/.config/tilt-tui/config.json
+```
 
-### Log Filters
-
-Filter out noisy log lines using regex patterns. Create named filters to hide logs matching specific patterns.
-
-Example `~/.config/tilt-tui/config.json`:
+### Log filters
 
 ```json
 {
@@ -77,33 +65,34 @@ Example `~/.config/tilt-tui/config.json`:
 }
 ```
 
-Each filter:
-
-- Has a **name** (displayed in the UI when active)
-- Contains an array of **regex patterns** (JavaScript regex syntax)
-- Filters are applied automatically when the config file is present
-
-Active filters are shown in the log view header: `[logFilters: health-checks, debug-logs]`
-
-Set `disableClipboardCopy` to `true` if log selections may contain secrets and
-you do not want selected text copied to OS clipboard or OSC52 terminal clipboard.
+Filters use JavaScript regular-expression syntax. Active filters are shown in
+the log-view header. Set `disableClipboardCopy` to prevent selected logs from
+being copied to the system clipboard or through OSC52.
 
 ### Keybindings
 
-Bindings can be overridden by command name. Keys use `ctrl+`, `shift+`, or both:
+Override bindings by command name. Keys may use `ctrl+` and/or `shift+`:
 
 ```json
 {
-"keybindings": {
-"nav.down": ["j"],
-"nav.up": ["k"],
-"logs.scroll.pagedown": ["ctrl+d"],
-"logs.scroll.pageup": ["ctrl+u"]
-}
+  "keybindings": {
+    "nav.down": ["j"],
+    "nav.up": ["k"],
+    "logs.scroll.pagedown": ["ctrl+d"],
+    "logs.scroll.pageup": ["ctrl+u"]
+  }
 }
 ```
 
-The default resource view uses Vim-style navigation: `j`/`k` scroll one line,
-`Ctrl-d`/`Ctrl-u` scroll half a page, `g`/`G` jump to the top/bottom, `Tab`/
-`Shift-Tab` select the next/previous service, and `h`/`l` switch between the
-sidebar and logs. `d` in the tree toggles a resource's disabled state.
+Overrides replace the default keys for that command.
+
+## Development
+
+```bash
+bun run typecheck
+bun test
+bun run debug
+```
+
+The debug command starts Bun's inspector. Open the printed URL in a browser or
+use the backtick key to toggle the in-app debug console.

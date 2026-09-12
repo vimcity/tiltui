@@ -1,0 +1,28 @@
+# A dependency-free Tilt project for trying Tilt TUI without Kubernetes.
+
+local_resource(
+    'api',
+    cmd='printf "api: build complete\\n"',
+    serve_cmd='while true; do printf "api: healthy\\n"; sleep 3; done',
+    labels=['service'],
+)
+
+local_resource(
+    'worker',
+    cmd='printf "worker: build complete\\n"',
+    serve_cmd='while true; do printf "worker: processing queue\\n"; sleep 4; done',
+    labels=['service'],
+)
+
+local_resource(
+    'web',
+    cmd='printf "web: build complete\\n"',
+    serve_cmd='while true; do printf "web: listening on http://localhost:3000\\n"; sleep 5; done',
+    labels=['service'],
+)
+
+local_resource(
+    'checks',
+    cmd='printf "checks: passed\\n"',
+    labels=['setup'],
+)
