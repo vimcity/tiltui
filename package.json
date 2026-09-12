@@ -1,0 +1,36 @@
+{
+  "name": "tilt-tui",
+  "version": "0.3.0",
+  "description": "Tilt TUI built with OpenTUI Solid",
+  "type": "module",
+  "private": false,
+  "bin": {
+    "tilt-tui": "./dist/tilt-tui-linux-x64/bin/tilt-tui"
+  },
+  "files": [
+    "dist/tilt-tui-linux-x64/"
+  ],
+  "scripts": {
+    "dev": "bun run --conditions=browser --preload @opentui/solid/preload ./src/index.tsx",
+    "debug": "SHOW_CONSOLE=true bun run --inspect-wait --conditions=browser --preload @opentui/solid/preload ./src/index.tsx",
+    "build": "bun build ./src/index.tsx --outdir=./dist --target=bun",
+    "build:binary": "bun run script/build.ts",
+    "build:binary:single": "bun run script/build.ts --single",
+    "typecheck": "tsc --noEmit",
+    "knip": "knip"
+  },
+  "dependencies": {
+    "@opentui/core": "0.1.97",
+    "@opentui/solid": "0.1.97",
+    "citty": "^0.2.2",
+    "effection": "4.0.2",
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "25.2.0",
+    "knip": "5.82.1",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  }
+}
